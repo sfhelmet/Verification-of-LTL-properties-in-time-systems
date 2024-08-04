@@ -1,3 +1,5 @@
+:- consult(ltl).
+
 % Define variable facts
 var(1, temp, 12).
 var(2, temp, 13).
@@ -17,8 +19,3 @@ state(2, 'Idle').
 state(3, 'Reading').
 state(4, 'Reading').
 state(5, 'Error').
-
-global(TID, E) :- 
-    py_call(query_engine:'execute_global'(TID, E), Res), 
-    write(Res).
-
