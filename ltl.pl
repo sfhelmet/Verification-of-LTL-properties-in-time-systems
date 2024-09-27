@@ -3,49 +3,58 @@ initialize() :-
 
 set_timeid(TID) :-
     py_func(query_engine, set_time_id(TID), _).
-% Create set/get increment/decrement functions for time id
 
-global(TID, E) :-
-    term_string(E, S), atom_string(A, S),
-    py_func(query_engine, execute_global(TID, A), Res),
+get_timeid() :-
+    py_func(query_engine, get_time_id(), Res),
+    write(Res).
+
+increment_timeid() :-
+    py_func(query_engine, increment_time_id(), _).
+
+decrement_timeid() :-
+    py_func(query_engine, decrement_time_id(), _).
+
+global(Expr) :-
+    term_string(Expr, String), atom_string(Atom, String),
+    py_func(query_engine, execute_global(Atom), Res),
     Res == 'True'.
 
 
-future(TID, E) :-
-    term_string(E, S), atom_string(A, S),
-    py_func(query_engine, execute_finally(TID, A), Res),
+future(Expr) :-
+    term_string(Expr, String), atom_string(Atom, String),
+    py_func(query_engine, execute_finally(Atom), Res),
     Res == 'True'.
 
-next(TID, E) :-
-    term_string(E, S), atom_string(A, S),
-    py_func(query_engine, execute_next(TID, A), Res),
+finally(Expr) :-
+    future(Expr).
+
+next(Expr) :-
+    term_string(Expr, String), atom_string(Atom, String),
+    py_func(query_engine, execute_next(Atom), Res),
     Res == 'True'.
 
-release(TID, E1, E2) :-
-    term_string(E1, S1), atom_string(A1, S1),
-    term_string(E2, S2), atom_string(A2, S2),
-    py_func(query_engine, execute_release(TID, A1, A2), Res),
+release(Expr1, Expr2) :-
+    term_string(Expr1, String1), atom_string(Atom1, String1),
+    term_string(Expr2, String2), atom_string(Atom2, String2),
+    py_func(query_engine, execute_release(Atom1, Atom2), Res),
     Res == 'True'.
 
-release(E1, E2) :-
-    release(1, E1, E2).
-
-until(TID, E1, E2) :-
-    term_string(E1, S1), atom_string(A1, S1),
-    term_string(E2, S2), atom_string(A2, S2),
-    py_func(query_engine, execute_until(TID, A1, A2), Res),
+until(Expr1, Expr2) :-
+    term_string(Expr1, String1), atom_string(Atom1, String1),
+    term_string(Expr2, String2), atom_string(Atom2, String2),
+    py_func(query_engine, execute_until(Atom1, Atom2), Res),
     Res == 'True'.
 
-weak_until(TID, E1, E2) :-
-    term_string(E1, S1), atom_string(A1, S1),
-    term_string(E2, S2), atom_string(A2, S2),
-    py_func(query_engine, execute_weak_until(TID, A1, A2), Res),
+weak_until(Expr1, Expr2) :-
+    term_string(Expr1, String1), atom_string(Atom1, String1),
+    term_string(Expr2, String2), atom_string(Atom2, String2),
+    py_func(query_engine, execute_weak_until(Atom1, Atom2), Res),
     Res == 'True'.
 
-strong_release(TID, E1, E2) :-
-    term_string(E1, S1), atom_string(A1, S1),
-    term_string(E2, S2), atom_string(A2, S2),
-    py_func(query_engine, execute_strong_release(TID, A1, A2), Res),
+strong_release(Expr1, Expr2) :-
+    term_string(Expr1, String1), atom_string(Atom1, String1),
+    term_string(Expr2, String2), atom_string(Atom2, String2),
+    py_func(query_engine, execute_strong_release(Atom1, Atom2), Res),
     Res == 'True'.
 
 % all(E) :-

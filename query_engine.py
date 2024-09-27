@@ -11,11 +11,11 @@ def set_time_id(tid) -> None:
 def get_time_id() -> int:
     return time_id
 
-def increment_id() -> None:
+def increment_time_id() -> None:
     global time_id
     time_id += 1
 
-def decrement_id() -> None:
+def decrement_time_id() -> None:
     global time_id
     time_id -= 1
 
@@ -24,60 +24,60 @@ def set_max_time_id() -> None:
     time_ids = [value['X'] for value in query("var(X, _, _)")]
     max_time_id = max(time_ids)
 
-def execute_global(time_id, exp: str):
+def execute_global(expr: str):
     for i in range(time_id, max_time_id + 1):
-        replaced_expression = __replace_variables(exp, i)
+        replaced_expression = __replace_variables(expr, i)
         if __evaluate(replaced_expression) == "False":
             return "False"
     return "True"     
 
-def execute_finally(time_id, exp: str):
+def execute_finally(expr: str):
     for i in range(time_id, max_time_id + 1):
-        replaced_expression = __replace_variables(exp, i)
+        replaced_expression = __replace_variables(expr, i)
         if __evaluate(replaced_expression) == "True":
             return "True"
     return "False"
 
 # if time id is not defined, it will not return the value of the variable at the previous time id
-def execute_next(time_id, exp):
-    replaced_expression = __replace_variables(exp, time_id + 1)
+def execute_next(expr: str):
+    replaced_expression = __replace_variables(expr, time_id + 1)
     
     return __evaluate(replaced_expression)
 
-def execute_until(time_id, exp1, exp2):
+def execute_until(expr1, expr2):
     for i in range(time_id, max_time_id + 1):
-        replaced_expression1 = __replace_variables(exp1, i)
-        replaced_expression2 = __replace_variables(exp2, i)
+        replaced_expression1 = __replace_variables(expr1, i)
+        replaced_expression2 = __replace_variables(expr2, i)
         if __evaluate(replaced_expression2) == "True":
             return "True"
         if __evaluate(replaced_expression1) == "False":
             return "False"
     return "False"
 
-def execute_release(time_id, exp1, exp2):
+def execute_release(expr1, expr2):
     for i in range(time_id, max_time_id + 1):
-        replaced_expression1 = __replace_variables(exp1, i)
-        replaced_expression2 = __replace_variables(exp2, i)
+        replaced_expression1 = __replace_variables(expr1, i)
+        replaced_expression2 = __replace_variables(expr2, i)
         if __evaluate(replaced_expression2) == "False":
             return "False"
         if __evaluate(replaced_expression1) == "True":
             return "True"
     return "True"
 
-def execute_weak_until(time_id, exp1, exp2):
+def execute_weak_until(expr1, expr2):
     for i in range(time_id, max_time_id + 1):
-        replaced_expression1 = __replace_variables(exp1, i)
-        replaced_expression2 = __replace_variables(exp2, i)
+        replaced_expression1 = __replace_variables(expr1, i)
+        replaced_expression2 = __replace_variables(expr2, i)
         if __evaluate(replaced_expression2) == "True":
             return "True"
         if __evaluate(replaced_expression1) == "False":
             return "False"
     return "True"
 
-def execute_strong_release(time_id, exp1, exp2):
+def execute_strong_release(expr1, expr2):
     for i in range(time_id, max_time_id + 1):
-        replaced_expression1 = __replace_variables(exp1, i)
-        replaced_expression2 = __replace_variables(exp2, i)
+        replaced_expression1 = __replace_variables(expr1, i)
+        replaced_expression2 = __replace_variables(expr2, i)
         if __evaluate(replaced_expression2) == "False":
             return "False"
         if __evaluate(replaced_expression1) == "True":
@@ -118,7 +118,7 @@ def __parse_boolean_expression(expression):
 
 if not max_time_id:
     set_max_time_id()
-    
+
 '''
 temp > -1
 >(temp, -1)
