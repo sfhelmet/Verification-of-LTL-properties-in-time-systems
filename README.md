@@ -1,3 +1,6 @@
+# Verification-of-LTL-properties-in-time-systems
+This tool was built for a research paper under CUSRA
+
 ## How to run in Docker environment  
 
 1. Build the image  
